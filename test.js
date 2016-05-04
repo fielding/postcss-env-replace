@@ -1,20 +1,66 @@
 import postcss from 'postcss';
 import test    from 'ava';
 
-import plugin from './';
+import plugin from './index';
 
-function run(t, input, output, opts = { }) {
-    return postcss([ plugin(opts) ]).process(input)
-        .then( result => {
+function run(t, input, output, opts = {}) {
+    return postcss([plugin(opts)])
+        .process(input)
+        .then(result => {
             t.deepEqual(result.css, output);
             t.deepEqual(result.warnings().length, 0);
         });
 }
 
-/* Write tests here
+test('replaces single ENV-Variable with desired text from DEV-configuration',
+    t => {
+        var options = {
+            environment: 'DEV',
+            replacements: {
+                VAR: {
+                    PROD: 'http://my.domain',
+                    DEV: 'http://localhost'
+                }
+            }
+        };
+        var input =
+            'div { background-image: url(env_replace(VAR)/myImage.jpg); }';
+        var expectedOutput =
+            'div { background-image: url(http://localhost/myImage.jpg); }';
 
-test('does something', t => {
-    return run(t, 'a{ }', 'a{ }', { });
+        return run(t, input, expectedOutput, options);
+    }
+);
+
+test('replaces multiple ENV-Variable with desired text from DEV-configuration',
+    t => {
+        var options = {
+            environment: 'DEV',
+            replacements: {
+                VAR: {
+                    PROD: 'http://my.domain',
+                    DEV: 'http://localhost'
+                },
+                OTHER_VAR: {
+                    PROD: 'http://my.other.domain/someImage.jpg',
+                    DEV: 'http://localhost/someImage.jpg'
+                }
+            }
+        };
+        var input =
+            'div { background-image: url(env_replace(VAR)/myImage.jpg) ' +
+            'url(env_replace(OTHER_VAR)); }';
+        var expectedOutput =
+            'div { background-image: url(http://localhost/myImage.jpg) ' +
+            'url(http://localhost/someImage.jpg); }';
+
+        return run(t, input, expectedOutput, options);
+    }
+);
+
+
+test('Fail if no options are given', t => {
+    return t.throws(
+        postcss([plugin()]).process('a { }'),
+        /Unsufficient options present/);
 });
-
-*/

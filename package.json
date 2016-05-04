@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/stehefan/postcss-env-replace",
   "dependencies": {
+    "lodash": "^4.11.2",
     "postcss": "^5.0.16"
   },
   "devDependencies": {

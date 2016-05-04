@@ -8,20 +8,28 @@
 
 ```css
 .foo {
-    /* Input example */
+    background-image: url(env_replace(BASE_URL)/myAwesomeImage.jpg);
 }
 ```
 
 ```css
 .foo {
-  /* Output example */
+    background-image: url(http://localhost/myAwesomeImage.jpg);
 }
 ```
 
 ## Usage
 
 ```js
-postcss([ require('postcss-env-replace') ])
+postcss([ require('postcss-env-replace')({
+    environment: process.env.ENVIRONMENT || 'dev',
+    replacements: {
+        BASE_URL: {
+            prod: 'http://my.site',
+            stage: 'http://stage.my.site',
+            ci: 'http://ci.my.site',
+            dev: 'http://localhost'
+        }
+    }
+}) ])
 ```
-
-See [PostCSS] docs for examples for your environment.

@@ -18,6 +18,11 @@
 }
 ```
 
+## Installation
+```
+npm install postcss-env-replace --save-dev
+```
+
 ## Usage
 
 ```js

@@ -57,10 +57,18 @@ module.exports = postcss.plugin('postcss-env-replace', function (opts) {
         var environment = opts.environment || process.env.ENVIRONMENT;
         var replacements = opts.replacements;
 
-        if (undefined === replacements || undefined === environment) {
+        if (undefined === replacements || typeof replacements !== 'object') {
             throw css.error(
-                'Unsufficient options present. Please check documentation ' +
-                'for a minimal configuration',
+                'No replacements were given. Please check with documentation' +
+                'on how to pass minimal configuration properties.',
+                { plugin: plugin.name }
+            );
+        }
+
+        if (undefined === environment || typeof environment !== 'string') {
+            throw css.error(
+                'No environment was given. Please check with documentation' +
+                'on how to pass minimal configuration properties.',
                 { plugin: plugin.name }
             );
         }

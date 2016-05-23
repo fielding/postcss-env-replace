@@ -58,9 +58,14 @@ test('replaces multiple ENV-Variable with desired text from DEV-configuration',
     }
 );
 
-
-test('Fail if no options are given', t => {
+test('Fail if no environment-option is given', t => {
     return t.throws(
-        postcss([plugin()]).process('a { }'),
-        /Unsufficient options present/);
+        postcss([plugin( { replacements: {} } )]).process('a { }'),
+        /No environment was given/);
+});
+
+test('Fail if no replacement-option is given', t => {
+    return t.throws(
+        postcss([plugin( { environment: 'someEnv' } )]).process('a { }'),
+        /No replacements were given/);
 });

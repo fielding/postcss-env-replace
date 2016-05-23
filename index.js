@@ -1,5 +1,4 @@
 var postcss = require('postcss');
-var _ = require('lodash');
 var plugin = require('./package.json');
 
 /**
@@ -18,14 +17,14 @@ var functionRegex = /env_replace\(([a-zA-Z_]+)\)/gi;
  * @param {String} environment - Name of the current environment
  */
 function verifyParameters(replacements, value, decl, environment) {
-    if (_.isUndefined(replacements[value])) {
+    if (undefined === replacements[value]) {
         throw decl.error(
             'Unknown variable ' + value,
             { plugin: plugin.name }
         );
     }
 
-    if (_.isUndefined(replacements[value][environment])) {
+    if (undefined === replacements[value][environment]) {
         throw decl.error(
             'No suitable replacement for "' + value +
             '" in environment "' + environment + '"',
@@ -58,14 +57,13 @@ module.exports = postcss.plugin('postcss-env-replace', function (opts) {
         var environment = opts.environment || process.env.ENVIRONMENT;
         var replacements = opts.replacements;
 
-        if (_.isUndefined(replacements) || _.isUndefined(environment)) {
+        if (undefined === replacements || undefined === environment) {
             throw css.error(
                 'Unsufficient options present. Please check documentation ' +
                 'for a minimal configuration',
                 { plugin: plugin.name }
             );
         }
-
 
         css.walkRules(function walkRule(rule) {
             rule.walkDecls(function (decl) {

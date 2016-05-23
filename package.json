@@ -1,6 +1,6 @@
 {
   "name": "postcss-env-replace",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "PostCSS plugin that will replace Templates with environment-specific content",
   "keywords": [
     "postcss",

@@ -78,5 +78,11 @@ module.exports = postcss.plugin('postcss-env-replace', function (opts) {
                 walkDeclaration(decl, environment, replacements);
             });
         });
+
+        css.walkAtRules(function walkAtRule(rule) {
+            rule.walkDecls(function (decl) {
+                walkDeclaration(decl, environment, replacements);
+            });
+        });
     };
 });
